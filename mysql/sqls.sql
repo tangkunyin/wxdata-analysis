@@ -43,12 +43,12 @@ insert into wx_data_info (wxNum,wxQRCodeUrl) values ('test10','https://shuoit.ne
 ## weixin analysis infomations table
 create table wx_analysis_info (
     analyzeId int auto_increment,
-    wxId int not null comment 'the wxId in wx_data_info table',
-    clientIp varchar(60) not null comment 'the remote client ip address',
+    wxId int comment 'the wxId in wx_data_info table',
+    clientIp varchar(60) not null default '0.0.0.0' comment 'the remote client ip address',
     viewCount int default 1 comment 'weixin view count number',
     lastViewDate varchar(30) comment 'the last viewed time',
-    refUrl varchar(200) not null comment 'the referer of visite url',
-    primary key(analyzeId,wxId,clientIp,refUrl)
+    refUrl varchar(200) comment 'the referer of visite url',
+    primary key(analyzeId,wxId,clientIp)
 );
 
 insert into wx_analysis_info (wxId) values (1);
