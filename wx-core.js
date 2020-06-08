@@ -14,7 +14,7 @@ function getWeixinInfo (id) {
              在你的html中自定义一个元素，id为wxNumTextContainer。
              调用getwx.js后，将会在指定容器内显示并统计该微信号码
              */
-        $ ('.wxNumTextContainer').html (wxNum);
+        $('.wxNumTextContainer').html(wxNum);
         if (hasNoId) {
           doAnalysis (jsonData.data.wxId);
         }
