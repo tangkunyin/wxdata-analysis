@@ -23,6 +23,7 @@ create table wx_group (
     uid int not null comment 'login user name',
     name varchar(300) unique not null comment 'wx group name',
     status int default 0 comment 'group status: 0=normal,1=forbidden|deleted',
+    primary key(id)
 );
 
 insert into wx_user (uname,phone,remark) values ('admin',13012345678, 'just a test data');
