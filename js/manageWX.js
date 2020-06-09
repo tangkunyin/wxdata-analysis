@@ -45,7 +45,7 @@ $ ().ready (function () {
 function addWeixinData (wxNum, wxQRCodeUrl) {
   $.post (
     '/utils/manageDao.php',
-    {type: 0, id: wxNum, url: wxQRCodeUrl},
+    {type: 0, groupId: location.search.split ('=')[1], id: wxNum, url: wxQRCodeUrl},
     function (data) {
       var jsonData = JSON.parse (data);
       if (jsonData.code == 0) {

@@ -7,7 +7,7 @@ if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
   $type = $_POST['type'];
   $id = $_POST['id'];
   if ($type == 0 && !empty($_POST['url'])) {
-    addWeixinData($id, $_POST['url']);
+    addWeixinData($_POST['groupId'], $id, $_POST['url']);
   } elseif ($type == 1) {
     changeWeixinState($id, $_POST['state']);
   } elseif ($type == -1) {
@@ -21,18 +21,22 @@ if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
   echo json_encode(array('code' => 403, 'msg' => 'you need login'));
 }
 
-function addWeixinData($id, $url)
+function addWeixinData($groupId, $id, $url)
 {
-  $conn = get_db_con();
-  $addQuery = mysqli_query($conn, "insert into wx_data_info (wxNum,wxQRCodeUrl) values ('" . $id . "','" . $url . "')");
-  $addResult = mysqli_query($conn, $addQuery);
+  if ($groupId) {
+    $conn = get_db_con();
+    $addQuery = mysqli_query($conn, "insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values ('" . $groupId . "','" . $id . "','" . $url . "')");
+    $addResult = mysqli_query($conn, $addQuery);
+    
+    mysqli_close($conn);
 
-  mysqli_close($conn);
-
-  if (empty($addResult)) {
-    echo json_encode(array('code' => 0, 'msg' => '添加成功'));
+    if (empty($addResult)) {
+      echo json_encode(array('code' => 0, 'msg' => '添加成功'));
+    } else {
+      echo json_encode(array('code' => -1, 'msg' => '添加失败'));
+    }
   } else {
-    echo json_encode(array('code' => -1, 'msg' => '添加失败'));
+    echo json_encode(array('code' => -2, 'msg' => 'groupId error...check your url params'));
   }
 }
 
