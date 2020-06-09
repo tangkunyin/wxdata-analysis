@@ -7,10 +7,12 @@ if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
   // 用户已登录，查询列表数据
   $totalViewCountQuerySql = 'select sum(viewCount) as totalViewCount from wx_analysis_info';
   $queryAllSql = 'SELECT wd.*, IFNULL(wa.viewCount,0) AS viewCount FROM wx_data_info wd LEFT JOIN (SELECT wxId, SUM(viewCount) viewCount FROM wx_analysis_info GROUP BY wxId) wa ON wd.wxId = wa.wxId order by viewCount desc';
+  $queryAllGroups = 'select id,name from wx_group where uid=' . $_SESSION['adminId'] . ' and status=0';
 
   $conn = get_db_con();
   $totalCountResult = mysqli_query($conn, $totalViewCountQuerySql);
   $wxDataResult = mysqli_query($conn, $queryAllSql);
+  $groupResult = mysqli_query($conn, $queryAllGroups);
 
   //总浏览数
   $tCount = mysqli_fetch_object($totalCountResult);
@@ -19,6 +21,13 @@ if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
   while ($row = mysqli_fetch_object($wxDataResult)) {
     array_push($wxDataList, $row);
   }
+
+  $wxGroupList = array();
+  while ($group = mysqli_fetch_object($groupResult)) {
+    array_push($wxGroupList, $group);
+  }
+
+  mysqli_close($conn);
 } else {
   unset($_SESSION['admin']);
   echo "<script>window.location.href =\"/login.php\";</script>";
@@ -71,11 +80,14 @@ if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
     <div class="row">
       <div class="col-sm-3 col-md-2 sidebar">
         <ul class="nav nav-sidebar">
-          <!--  TODO. 增加用户组  -->
-          <li class="active"><a href="#">你自己<span class="sr-only">(current)</span></a></li>
-          <li><a href="#">王尼玛</a></li>
-          <li><a href="#">李尼玛</a></li>
-          <li><a href="#">张尼玛</a></li>
+          <?php foreach ($wxGroupList as $group) { ?>
+            <li>
+              <a href="/manager.php?id=<?php echo $group->id; ?>"><?php echo $group->name; ?></a>
+              <?php if ($group->id == 1) { ?>
+                <span class="sr-only">(current)</span>
+              <?php } ?>
+            </li>
+          <?php } ?>
         </ul>
       </div>
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
