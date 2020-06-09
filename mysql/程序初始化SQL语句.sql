@@ -1,7 +1,5 @@
-# ========================= 数据库初始化，需要手动执行以下 SQL
-
-create database weixin;
-use weixin;
+# create database weixin;
+# use weixin;
 
 create table wx_user (
     uid int auto_increment,
@@ -37,7 +35,7 @@ create table wx_analysis_info (
     primary key(analyzeId,wxId,clientIp)
 );
 
-## 注意帐号密码从这里改，没有加密！
+# 注意帐号密码从这里改，没有加密！
 insert into wx_user (uname,passd,phone,remark) values ('admin','123456',13012345678, 'just a test data');
 insert into wx_group (uid,name) values (1, '你自己');
 
@@ -48,24 +46,3 @@ insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test4','http://w
 insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test5','http://www.demo.com/weixin-qrcode.jpg');
 
 insert into wx_analysis_info (wxId) values (1);
-
-# ==========   程序用，人不管 ================================== #
-
-# 查微信列表数据
-SELECT wd.*, IFNULL(wa.viewCount,0) AS viewCount FROM wx_data_info wd LEFT JOIN (SELECT wxId, SUM(viewCount) viewCount FROM wx_analysis_info GROUP BY wxId) wa ON wd.wxId = wa.wxId where wd.groupId = 2 order by viewCount desc
-
-# 查流量占比
-## 总流量
-select ifnull(sum(viewCount),0) as totalViewCount from wx_analysis_info where wxId in (select wxId from wx_data_info where groupId = 1);
-
-#  随机返回信息
-SELECT wxId,wxNum FROM wx_data_info where state = 0 and wxId in (SELECT wxId FROM wx_analysis_info where clientIp='127.0.0.1' and refUrl='https://www.baidu.com') limit 0,1
-
-## 根据ip返回
-SELECT wd.wxId,wd.wxNum,wd.state,wa.viewCount AS viewCount FROM wx_data_info wd LEFT JOIN (SELECT wxId,viewCount FROM wx_analysis_info where clientIp='127.0.0.1') wa ON wd.wxId = wa.wxId and wd.state = 0 order by viewCount desc limit 0,1
-
-## 根据refUrl返回
-SELECT wd.wxId,wd.wxNum,wd.state,wa.viewCount AS viewCount FROM wx_data_info wd LEFT JOIN (SELECT wxId,viewCount FROM wx_analysis_info where refUrl='https://www.baidu.com') wa ON wd.wxId = wa.wxId and wd.state = 0 order by viewCount desc limit 0,1
-
-## ip和refUrl都没有，随机返回
-SELECT wxId,wxNum FROM wx_data_info where state = 0
