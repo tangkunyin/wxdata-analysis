@@ -13,7 +13,7 @@
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
   <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script type="text/javascript" src="/js/getwx.js"></script>
+  <script type="text/javascript" src="/getwx.js" id="getwxJS" gid="2"></script>
   <style>
     .wxNumTextContainer {
       color: red;

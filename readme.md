@@ -33,7 +33,13 @@ insert into wx_user (uname,passd,phone,remark) values ('登录名','密码',1301
 ```
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<script type="text/javascript" src="(代码运行的域名)/js/getwx.js"></script>
+<script type="text/javascript" src="/getwx.js" id="getwxJS" wid="5" gid="2"></script>
 ```
+
+- wid即系统内的微信号，如果指定则统计指定的微信号。若不指定则取第一组第一个有效的微信号
+- gid即系统内的分组号，如果仅指定分组号，则统计改组第一个有效的微信号。
+
+**wid和gid都有则只取wid，两个都没有取第一组第一个有效微信号**
+
 
 2. 你的html中自定义一个元素，id为wxNumTextContainer。调用getwx.js后，将会在指定容器内显示并统计该微信号码

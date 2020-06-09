@@ -92,7 +92,7 @@ if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
             }
           ?>
             <li class="<?php echo $isCurrentNav ? 'active' : '' ?>">
-              <a href="/manager.php?id=<?php echo $group->id; ?>"><?php echo $group->name; ?></a>
+              <a href="/manager.php?id=<?php echo $group->id; ?>"><?php echo $group->id.', '.$group->name; ?></a>
               <?php if ($isCurrentNav) { ?>
                 <span class="sr-only">(current)</span>
               <?php } ?>

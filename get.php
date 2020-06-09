@@ -5,20 +5,20 @@ require './utils/visite.php';
 // 指定允许其他域名访问
 header('Access-Control-Allow-Origin:*');
 // 响应类型
-header('Access-Control-Allow-Methods:POST');
+header('Access-Control-Allow-Methods:GET,POST');
 // 响应头设置
-header('Access-Control-Allow-Headers:x-requested-with,content-type'); 
+header('Access-Control-Allow-Headers:x-requested-with,content-type');
 
 try {
-    if(empty($_GET['wid'])){
-       $randomInfo = randomGet();
-       echo json_encode($randomInfo);
-    }else{
+    if (!empty($_GET['wid'])) {
         $wxId = $_GET['wid'];
         $weixinInfo = getWxId($wxId);
         echo json_encode($weixinInfo);
+    } else {
+        $randomInfo = randomGet($_GET['gid']);
+        echo json_encode($randomInfo);
     }
-   } catch (Exception $e) {
+} catch (Exception $e) {
     echo $e->getMessage();
 }
 
