@@ -1,12 +1,8 @@
-# create database weixin
+# ========================= 数据库初始化，需要手动执行以下 SQL
 
 create database weixin;
-
 use weixin;
 
-# create data tables
-
-## user table
 create table wx_user (
     uid int auto_increment,
     uname varchar(100) unique not null comment 'login user name',
@@ -16,8 +12,6 @@ create table wx_user (
     remark varchar(200) default 'master user' comment'remark infomations',
     primary key(uid,uname)
 );
-
-## group table
 create table wx_group (
     id int auto_increment,
     uid int not null comment 'login user name',
@@ -25,12 +19,6 @@ create table wx_group (
     status int default 0 comment 'group status: 0=normal,1=forbidden|deleted',
     primary key(id)
 );
-
-insert into wx_user (uname,phone,remark) values ('admin',13012345678, 'just a test data');
-insert into wx_group (uid,name) values (1, '你自己');
-
-
-## weixin visite infomations table
 create table wx_data_info (
     wxId int auto_increment,
     groupId int not null,
@@ -39,14 +27,6 @@ create table wx_data_info (
     state int default 0 comment '0:enable,1:disable',
     primary key(wxId,wxNum)
 );
-
-insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test1','http://www.faxingw.cn/upload/image/20160314/1457948139747182.jpg');
-insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test2','http://www.faxingw.cn/upload/image/20160314/1457948139747182.jpg');
-insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test3','http://www.faxingw.cn/upload/image/20160314/1457948139747182.jpg');
-insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test4','http://www.faxingw.cn/upload/image/20160314/1457948139747182.jpg');
-insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test5','http://www.faxingw.cn/upload/image/20160314/1457948139747182.jpg');
-
-## weixin analysis infomations table
 create table wx_analysis_info (
     analyzeId int auto_increment,
     wxId int comment 'the wxId in wx_data_info table',
@@ -57,9 +37,18 @@ create table wx_analysis_info (
     primary key(analyzeId,wxId,clientIp)
 );
 
+insert into wx_user (uname,phone,remark) values ('admin',13012345678, 'just a test data');
+insert into wx_group (uid,name) values (1, '你自己');
+
+insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test1','http://www.faxingw.cn/upload/image/20160314/1457948139747182.jpg');
+insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test2','http://www.faxingw.cn/upload/image/20160314/1457948139747182.jpg');
+insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test3','http://www.faxingw.cn/upload/image/20160314/1457948139747182.jpg');
+insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test4','http://www.faxingw.cn/upload/image/20160314/1457948139747182.jpg');
+insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test5','http://www.faxingw.cn/upload/image/20160314/1457948139747182.jpg');
+
 insert into wx_analysis_info (wxId) values (1);
 
-# ==========
+# ==========   程序用，人不管 ================================== #
 
 # 查微信列表数据
 SELECT wd.*, IFNULL(wa.viewCount,0) AS viewCount FROM wx_data_info wd LEFT JOIN (SELECT wxId, SUM(viewCount) viewCount FROM wx_analysis_info GROUP BY wxId) wa ON wd.wxId = wa.wxId where wd.groupId = 2 order by viewCount desc
@@ -67,8 +56,6 @@ SELECT wd.*, IFNULL(wa.viewCount,0) AS viewCount FROM wx_data_info wd LEFT JOIN 
 # 查流量占比
 ## 总流量
 select ifnull(sum(viewCount),0) as totalViewCount from wx_analysis_info where wxId in (select wxId from wx_data_info where groupId = 1);
-
-
 
 #  随机返回信息
 SELECT wxId,wxNum FROM wx_data_info where state = 0 and wxId in (SELECT wxId FROM wx_analysis_info where clientIp='127.0.0.1' and refUrl='https://www.baidu.com') limit 0,1
