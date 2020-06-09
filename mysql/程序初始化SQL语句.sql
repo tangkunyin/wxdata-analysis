@@ -15,7 +15,7 @@ create table wx_user (
 create table wx_group (
     id int auto_increment,
     uid int not null comment 'login user name',
-    name varchar(300) unique not null comment 'wx group name',
+    name varchar(200) unique not null comment 'wx group name',
     status int default 0 comment 'group status: 0=normal,1=forbidden|deleted',
     primary key(id)
 );
@@ -29,11 +29,11 @@ create table wx_data_info (
 );
 create table wx_analysis_info (
     analyzeId int auto_increment,
-    wxId int comment 'the wxId in wx_data_info table',
+    wxId int comment 'the wxId',
     clientIp varchar(60) not null default '0.0.0.0' comment 'the remote client ip address',
     viewCount int default 1 comment 'weixin view count number',
     lastViewDate varchar(30) comment 'the last viewed time',
-    refUrl varchar(200) comment 'the referer of visite url',
+    refUrl varchar(200) comment 'visite url',
     primary key(analyzeId,wxId,clientIp)
 );
 
@@ -41,11 +41,11 @@ create table wx_analysis_info (
 insert into wx_user (uname,passd,phone,remark) values ('admin','123456',13012345678, 'just a test data');
 insert into wx_group (uid,name) values (1, '你自己');
 
-insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test1','http://www.faxingw.cn/upload/image/20160314/1457948139747182.jpg');
-insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test2','http://www.faxingw.cn/upload/image/20160314/1457948139747182.jpg');
-insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test3','http://www.faxingw.cn/upload/image/20160314/1457948139747182.jpg');
-insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test4','http://www.faxingw.cn/upload/image/20160314/1457948139747182.jpg');
-insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test5','http://www.faxingw.cn/upload/image/20160314/1457948139747182.jpg');
+insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test1','http://www.demo.com/weixin-qrcode.jpg');
+insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test2','http://www.demo.com/weixin-qrcode.jpg');
+insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test3','http://www.demo.com/weixin-qrcode.jpg');
+insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test4','http://www.demo.com/weixin-qrcode.jpg');
+insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test5','http://www.demo.com/weixin-qrcode.jpg');
 
 insert into wx_analysis_info (wxId) values (1);
 
