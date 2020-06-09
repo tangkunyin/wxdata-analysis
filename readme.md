@@ -16,6 +16,12 @@
 
 这个可以在初始化的SQL中改，/mysql/sqls.sql文件第41行。目前不支持用户注册修改之类的操作！
 
+或者直接复制以下语句修改，切莫动其他语句！！！
+
+```sql
+insert into wx_user (uname,passd,phone,remark) values ('登录名','密码',13012345678, 'just a test data');
+```
+
 ### 库使用
 
 1. 页面引用两个库：
