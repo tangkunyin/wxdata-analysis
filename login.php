@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
+  header("Location: /manager.php");
+  exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
