@@ -1,5 +1,9 @@
 ## 操作手册
 
+项目地址：https://gitee.com/tangkunyin/wxdata-analysis.git
+
+可以安装Git工具更新，https://git-scm.com/downloads
+
 ### 安装
 
 1. 使用前先确认MySQL正常使用，手动执行/mysql/sqls.sql文件中的语句。
