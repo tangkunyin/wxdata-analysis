@@ -80,10 +80,17 @@ if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
     <div class="row">
       <div class="col-sm-3 col-md-2 sidebar">
         <ul class="nav nav-sidebar">
-          <?php foreach ($wxGroupList as $group) { ?>
-            <li>
+          <?php foreach ($wxGroupList as $key=>$group) {
+            $isCurrentNav = $key == 0;
+            $queryId = $_SERVER["QUERY_STRING"];
+            if ($queryId) {
+              $queryId = substr_replace($queryId, "", 0, 3);
+              $isCurrentNav = $queryId == $group->id;
+            }
+          ?>
+            <li class="<?php echo $isCurrentNav ? 'active' : '' ?>">
               <a href="/manager.php?id=<?php echo $group->id; ?>"><?php echo $group->name; ?></a>
-              <?php if ($group->id == 1) { ?>
+              <?php if ($isCurrentNav) { ?>
                 <span class="sr-only">(current)</span>
               <?php } ?>
             </li>
