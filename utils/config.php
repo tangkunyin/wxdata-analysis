@@ -4,7 +4,7 @@ error_reporting(0);
 function get_db_con()
 {
 
-    $isDev = true;
+    $isDev = false;
 
     // MySql 数据库链接配置信息
     $serverName = "127.0.0.1";
