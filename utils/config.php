@@ -10,12 +10,13 @@ function get_db_con()
     $serverName = "127.0.0.1";
     $port = 3306;
 
-    // 以下分别是数据库用户名、密码、数据库名
-    $userName = "";
-    $passWord = "";
-    $dbName = "";
+    // ==== 安装程序从这里改 ===
+    $userName = ""; // 用户名
+    $passWord = ""; // 密码
+    $dbName = "";   // 数据库名
 
     if ($isDev) {
+        // 这里头是开发环境的
         $userName = "root";
         $passWord = "root";
         $dbName = "weixin";

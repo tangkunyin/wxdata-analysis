@@ -37,7 +37,8 @@ create table wx_analysis_info (
     primary key(analyzeId,wxId,clientIp)
 );
 
-insert into wx_user (uname,phone,remark) values ('admin',13012345678, 'just a test data');
+## 注意帐号密码从这里改，没有加密！
+insert into wx_user (uname,passd,phone,remark) values ('admin','123456',13012345678, 'just a test data');
 insert into wx_group (uid,name) values (1, '你自己');
 
 insert into wx_data_info (groupId,wxNum,wxQRCodeUrl) values (1,'test1','http://www.faxingw.cn/upload/image/20160314/1457948139747182.jpg');
