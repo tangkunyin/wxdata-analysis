@@ -2,11 +2,16 @@
 
 require './utils/config.php';
 
+$groupId = $_SERVER["QUERY_STRING"];
+if ($groupId) {
+  $groupId = substr_replace($groupId, "", 0, 3);
+}
+
 session_start();
 if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
   // 用户已登录，查询列表数据
-  $totalViewCountQuerySql = 'select sum(viewCount) as totalViewCount from wx_analysis_info';
-  $queryAllSql = 'SELECT wd.*, IFNULL(wa.viewCount,0) AS viewCount FROM wx_data_info wd LEFT JOIN (SELECT wxId, SUM(viewCount) viewCount FROM wx_analysis_info GROUP BY wxId) wa ON wd.wxId = wa.wxId order by viewCount desc';
+  $totalViewCountQuerySql = 'select ifnull(sum(viewCount),0) as totalViewCount from wx_analysis_info where wxId in (select wxId from wx_data_info where groupId = '.$groupId.')';
+  $queryAllSql = 'SELECT wd.*, IFNULL(wa.viewCount,0) AS viewCount FROM wx_data_info wd LEFT JOIN (SELECT wxId, SUM(viewCount) viewCount FROM wx_analysis_info GROUP BY wxId) wa ON wd.wxId = wa.wxId where wd.groupId = '.$groupId.' order by viewCount desc';
   $queryAllGroups = 'select id,name from wx_group where uid=' . $_SESSION['adminId'] . ' and status=0';
 
   $conn = get_db_con();
@@ -82,10 +87,8 @@ if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
         <ul class="nav nav-sidebar">
           <?php foreach ($wxGroupList as $key=>$group) {
             $isCurrentNav = $key == 0;
-            $queryId = $_SERVER["QUERY_STRING"];
-            if ($queryId) {
-              $queryId = substr_replace($queryId, "", 0, 3);
-              $isCurrentNav = $queryId == $group->id;
+            if ($groupId) {
+              $isCurrentNav = $groupId == $group->id;
             }
           ?>
             <li class="<?php echo $isCurrentNav ? 'active' : '' ?>">
