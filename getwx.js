@@ -6,11 +6,18 @@ $ ().ready (function () {
   }
 });
 
+function getServerUrl() {
+  var strUrl = $ ('#getwxJS').attr ('src');
+  if (strUrl && strUrl.startsWith('http')) {
+    return new URL(strUrl).origin + '/get.php';
+  }
+  return location.href + 'get.php';
+}
+
 function getWeixinInfo (id, gid) {
   
   var hasNoId = typeof id == 'undefined' || $.trim (id).length == 0;
-  
-  var url = new URL(location.href + '/get.php');
+  var url = new URL(getServerUrl());
   if (!hasNoId) {
     url.searchParams.append('wid', id);
   }
@@ -42,7 +49,7 @@ function getWeixinInfo (id, gid) {
 }
 
 function doAnalysis (id) {
-  $.get ('/get.php?wid=' + id, null, function (data) {
+  $.get (getServerUrl() + '?wid=' + id, null, function (data) {
     var jsonData = JSON.parse (data);
     console.log (jsonData.code == 0 ? '有效统计' : '无效统计');
   });
